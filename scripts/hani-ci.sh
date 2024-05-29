@@ -16,19 +16,7 @@ export KBUILD_BUILD_HOST=dungeon
 if [[ $1 = "-t" || $1 = "--tools" ]]; then
 	echo 'Cloning SDClang 17 to toolchain/'
 	git clone --depth=1 https://gitlab.com/itsHanibee/proprietary_vendor_qcom_sdclang -b 17 toolchain/ || exit 1
-
-	curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman" || exit 1
-
-	chmod -x antman
-
-	echo 'Navigate to the binaries of TC'
-	cd toolchain/compiler/
-
-	echo 'Patch for glibc'
-	bash ../../antman --patch=glibc
-	cd $KERNEL_PATH
 fi
-
 # Regenerate defconfig file
 if [[ $1 = "-r" || $1 = "--regen" ]]; then
 	make O=out ARCH=arm64 $DEFCONFIG savedefconfig
