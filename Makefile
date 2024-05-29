@@ -728,9 +728,6 @@ KBUILD_CFLAGS	+=
 endif
 endif
 
-# Machine Learning Guided Optimization
-KBUILD_CFLAGS	+= -mllvm -regalloc-enable-advisor=release
-
 # FP Contraction Optimizatiom
 KBUILD_CFLAGS	+= -ffp-contract=fast
 
@@ -837,7 +834,6 @@ KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
 
 ifeq ($(ld-name),lld)
 KBUILD_LDFLAGS += --lto-O3
-KBUILD_LDFLAGS += -mllvm -regalloc-enable-advisor=release
 endif
 
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
