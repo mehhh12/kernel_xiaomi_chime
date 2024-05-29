@@ -14,18 +14,19 @@ export KBUILD_BUILD_HOST=dungeon
 
 # Install needed tools
 if [[ $1 = "-t" || $1 = "--tools" ]]; then
-        mkdir toolchain
-	cd toolchain
+	echo 'Cloning SDClang 17 to toolchain/'
+	git clone --depth=1 https://gitlab.com/itsHanibee/proprietary_vendor_qcom_sdclang -b 17 toolchain/ || exit 1
 
 	curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman" || exit 1
 
 	chmod -x antman
 
-	echo 'Setting up toolchain in $(PWD)/toolchain'
-	bash antman -S --noprogress || exit 1
+	echo 'Navigate to the binaries of TC'
+	cd toolchain/compiler/
 
 	echo 'Patch for glibc'
-	bash antman --patch=glibc
+	bash ../../antman --patch=glibc
+	cd $KERNEL_PATH
 fi
 
 # Regenerate defconfig file
@@ -36,7 +37,7 @@ if [[ $1 = "-r" || $1 = "--regen" ]]; then
 fi
 
 if [[ $1 = "-b" || $1 = "--build" ]]; then
-	PATH=$PWD/toolchain/bin:$PATH
+	PATH=$PWD/toolchain/compiler/bin:$PATH
 	mkdir -p out
 	make O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1 $DEFCONFIG
 	echo -e ""
@@ -58,7 +59,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		rm *.zip 2>/dev/null
 		# Set kernel name and version
 		lastcommit=$(git log -n 1 --pretty=format:'%h' | cut -c 1-7)
-		ZIPNAME="4.19-hanikrnl."$lastcommit"-chime-$(date '+%d.%m.%y-%H%M').zip"
+		ZIPNAME="4.19-hanikrnl.sd-"$lastcommit"-chime-$(date '+%d.%m.%y-%H%M').zip"
 		echo -e ""
 		echo -e ""
 		echo -e "********************************************"

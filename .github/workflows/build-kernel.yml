@@ -26,7 +26,7 @@ jobs:
         python-is-python3 ccache libncurses5 lzop \
         patchelf git-lfs ripgrep clang-11 &> /dev/null
 
-    - name: Download Neutron Toolchain
+    - name: Prepare Toolchain
       run: bash scripts/hani-ci.sh --tools
 
     - name: Build hanikrnl.
@@ -36,4 +36,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: hanikrnl
-        path: 4.19-hanikrnl.*-chime*.zip
+        path: 4.19-hanikrnl.sd-*-chime*.zip
