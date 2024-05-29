@@ -6,25 +6,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+        image: ghcr.io/neutron-projects/docker-image:arch-minimal
     steps:
     - name: Checkout source
       uses: actions/checkout@v4
       with:
         submodules: recursive
-
-    - name: Making the Environment leaner
-      run: sudo snap list && sudo snap remove firefox && sudo apt remove -y snapd
-
-    - name: Update Environment
-      run: sudo apt update -y
-
-    - name: Install Dependencies
-      run: |
-        sudo apt install -y git-core gnupg build-essential zip \
-        curl libarchive-tools flex libc6-dev \
-        unzip python2 python3 python3-pip python3-dev \
-        python-is-python3 ccache libncurses5 lzop \
-        patchelf git-lfs ripgrep clang-11 &> /dev/null
 
     - name: Prepare Toolchain
       run: bash scripts/hani-ci.sh --tools
