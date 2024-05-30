@@ -16,7 +16,6 @@ export KBUILD_BUILD_HOST=dungeon
 if [[ $1 = "-t" || $1 = "--tools" ]]; then
 	echo 'Cloning SDClang 17 to toolchain/'
 	git clone --depth=1 https://gitlab.com/itsHanibee/proprietary_vendor_qcom_sdclang -b 17 toolchain/ || exit 1
-	ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 fi
 # Regenerate defconfig file
 if [[ $1 = "-r" || $1 = "--regen" ]]; then
